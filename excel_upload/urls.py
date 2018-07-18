@@ -1,4 +1,4 @@
-"""upload_file URL Configuration
+"""excel_upload URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.0/topics/http/urls/
@@ -18,9 +18,9 @@ from django.urls import path
 from app01 import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('index/', views.index),
     path('upload_file/', views.upload_file),
-    path('form_data_upload/', views.form_data_upload),
-    path('iframe_upload_img/', views.iframe_upload_img),
-    path('upload_iframe/', views.upload_iframe),
+    path('index/', views.index),
+    path('login/', views.login),
+    path('logout/', views.logout),
+    path('code/', views.code),
 ]

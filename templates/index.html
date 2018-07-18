@@ -3,41 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
-{#上传文件必须指定enctype="multipart/form-data"#}
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div style="position: relative;display: inline-block;height: 50px;min-width: 300px;overflow: hidden;">
-        <div style="position: absolute;top: 0;left: 0;right: 0;bottom: 0;z-index: 1000;border: 1px dotted #9d9d9d;color: #9d9d9d;line-height: 50px;padding-left: 15px;">
-            <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-            <span>点击上传文件</span>
+{#数据展示#}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>姓名</th>
+                    <th>年龄</th>
+                    <th>邮箱</th>
+                    <th>公司</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for customer in customer_list %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ customer.name }}</td>
+                        <td>{{ customer.age }}</td>
+                        <td>{{ customer.email }}</td>
+                        <td>{{ customer.company }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {#分页展示#}
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li><a href="?page=1" aria-label="Previous"><span aria-hidden="true">首页</span></a></li>
+
+                    {#has_previous 判断是否有上一页#}
+                    {% if customer_list.has_previous %}
+                        {#previous_page_number 上一页的页码#}
+                        <li><a href="?page={{ customer_list.previous_page_number }}" aria-label="Previous"><span
+                                aria-hidden="true">上一页</span></a></li>
+                    {% else %}
+                        {#class="disabled" 禁止用户点击#}
+                        <li class="disabled"><a href="" aria-label="Previous"><span aria-hidden="true">上一页</span></a>
+                        </li>
+                    {% endif %}
+
+                    {#遍历页码的列表#}
+                    {% for i in pageRange %}
+                        {#判断当前页码数等于底部页码时#}
+                        {% if current_num == i %}
+                            {#增加class,加深按钮#}
+                            <li class="active"><a href="?page={{ i }}">{{ i }}</a></li>
+                        {% else %}
+                            {#href参数为简写,它会自动获取当前路径，并拼接参数#}
+                            <li><a href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+
+                    {% endfor %}
+
+                    {#has_next 判断是否有下一页#}
+                    {% if customer_list.has_next %}
+                        {#next_page_number 下一页的页码#}
+                        <li><a href="?page={{ customer_list.next_page_number }}" aria-label="Next"><span
+                                aria-hidden="true">下一页</span></a></li>
+                    {% else %}
+                        {#class="disabled" 禁止用户点击#}
+                        <li class="disabled"><a href="" aria-label="Next"><span aria-hidden="true">下一页</span></a></li>
+                    {% endif %}
+
+                    <li><a href="?page={{ paginator.num_pages }}" aria-label="Next"><span aria-hidden="true">最后一页</span></a>
+                    </li>
+
+                </ul>
+            </nav>
         </div>
-        {#opacity表示设置透明度，0表示完全透明#}
-        <input name="customer_excel" type="file" id="excelFile"
-               style="position: absolute;top: 0;left: 0;right: 0;bottom: 0;background-color: #333333;z-index: 1001;opacity: 0;filter:alpha(opacity=0);">
+
     </div>
-    <div>
-        <lable>用户名: </lable><input type="text" name="user">
-        <input type="submit" value="提交">
-    </div>
-</form>
-<script src="/static/js/jquery.min.js"></script>
-<script>
-    $(function () {
-        {#当元素的值发生改变时，会发生 change 事件#}
-        $('#excelFile').change(function (e) {
-            {#event.currentTarget 属性是在事件冒泡阶段内的当前 DOM 元素，通常等于 this#}
-            {#:file 选择器选取带有 type=file 的 input 元素#}
-            {#0表示获取第一个元素,name表示获取文件名#}
-            var fileName = e.currentTarget.files[0].name;
-            {#prev() 获得匹配元素集合中每个元素紧邻的前一个同胞元素，通过选择器进行筛选是可选的#}
-            {#$(this)表示上传控件,那么它前一个同胞元素为div style="position:...#}
-            {#find() 方法获得当前元素集合中每个元素的后代，通过选择器、jQuery 对象或元素来筛选。#}
-            {#text() 方法方法设置或返回被选元素的文本内容#}
-            $(this).prev().find('span').text(fileName);
-        })
-    })
-</script>
+</div>
+
+
 </body>
 </html>
