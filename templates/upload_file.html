@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% csrf_token %}
+<div style="height: 100px;width: 100px;padding: 2px;border: 1px solid #dddddd;position: relative;">
+    <img style="height: 100%;width: 100%;border: 0;overflow: hidden;border-radius: 50%;"
+         id="previewImg"
+         src="/static/images/default.png">
+    <input style="top: 0;left: 0;right: 0;bottom: 0;opacity: 0;position: absolute;z-index: 102;" id="avatarImg"
+           name="avatar_img" type="file" class="img-file"/>
+</div>
+<div>点击图片更换(<a href="#">撤销</a>)</div>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+        <input type="hidden" name="avatar" id="avatar">
+        <input type="text" name="user">
+        <input type="submit" value="提交">
+    </div>
+</form>
+<script src="/static/js/jquery.min.js"></script>
+    <script>
+        $(function () {
+            bindChangeAvatar3();
+        });
+
+        function bindChangeAvatar3() {
+            $('#avatarImg').change(function () {
+                var csrf = $("[name=csrfmiddlewaretoken]").val();
+                var file_obj = $(this)[0].files[0];
+                var formdata = new FormData();
+                formdata.append('img_upload', file_obj);
+                formdata.append("csrfmiddlewaretoken",csrf);
+                $.ajax({
+                    url: '/form_data_upload/',
+                    type:'POST',
+                    data: formdata,
+                    processData: false,  // tell jQuery not to process the data
+                    contentType: false,  // tell jQuery not to set contentType
+                    success: function (arg) {
+                        // 给img标签设置src属性，预览
+                        console.log(arg);
+                        $('#previewImg').attr('src',arg);
+                        console.log(arg);
+                        var avatar = $('#avatar').val(arg);
+                        console.log(avatar);  //打印头像地址,用于后续表单提交
+                    }
+                })
+            })
+        }
+    </script>
+</body>
+</html>

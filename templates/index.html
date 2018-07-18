@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{#上传文件必须指定enctype="multipart/form-data"#}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div style="position: relative;display: inline-block;height: 50px;min-width: 300px;overflow: hidden;">
+        <div style="position: absolute;top: 0;left: 0;right: 0;bottom: 0;z-index: 1000;border: 1px dotted #9d9d9d;color: #9d9d9d;line-height: 50px;padding-left: 15px;">
+            <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+            <span>点击上传文件</span>
+        </div>
+        {#opacity表示设置透明度，0表示完全透明#}
+        <input name="customer_excel" type="file" id="excelFile"
+               style="position: absolute;top: 0;left: 0;right: 0;bottom: 0;background-color: #333333;z-index: 1001;opacity: 0;filter:alpha(opacity=0);">
+    </div>
+    <div>
+        <lable>用户名: </lable><input type="text" name="user">
+        <input type="submit" value="提交">
+    </div>
+</form>
+<script src="/static/js/jquery.min.js"></script>
+<script>
+    $(function () {
+        {#当元素的值发生改变时，会发生 change 事件#}
+        $('#excelFile').change(function (e) {
+            {#event.currentTarget 属性是在事件冒泡阶段内的当前 DOM 元素，通常等于 this#}
+            {#:file 选择器选取带有 type=file 的 input 元素#}
+            {#0表示获取第一个元素,name表示获取文件名#}
+            var fileName = e.currentTarget.files[0].name;
+            {#prev() 获得匹配元素集合中每个元素紧邻的前一个同胞元素，通过选择器进行筛选是可选的#}
+            {#$(this)表示上传控件,那么它前一个同胞元素为div style="position:...#}
+            {#find() 方法获得当前元素集合中每个元素的后代，通过选择器、jQuery 对象或元素来筛选。#}
+            {#text() 方法方法设置或返回被选元素的文本内容#}
+            $(this).prev().find('span').text(fileName);
+        })
+    })
+</script>
+</body>
+</html>

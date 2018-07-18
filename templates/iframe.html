@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <input type="text" id="addr">
+    <input type="submit" onclick="changeUrl()" value="访问">
+</div>
+
+<iframe id="ifr" style="width: 960px;height: 800px;" src="https://www.autohome.com.cn/beijing/" frameborder="0"></iframe>
+<script>
+    function changeUrl() {
+        //获取输入框的值
+        var addr = document.getElementById("addr").value;
+        //修改iframe的src的值
+        document.getElementById("ifr").src = addr;
+    }
+</script>
+</body>
+</html>
