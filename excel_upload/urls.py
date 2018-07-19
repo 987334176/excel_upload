@@ -18,7 +18,7 @@ from django.urls import path
 from app01 import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('upload_file/', views.upload_file),
+    path('upload_excel_file/', views.upload_excel_file),
     path('index/', views.index),
     path('login/', views.login),
     path('logout/', views.logout),

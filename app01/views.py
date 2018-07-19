@@ -82,9 +82,9 @@ def logout(request):  # 注销
     return redirect("/login/")
 
 @required_login
-def upload_file(request):  # 上传文件
+def upload_excel_file(request):  # 上传文件
     if request.method == "GET":
-        return render(request, 'upload_file.html')
+        return render(request, 'upload_excel_file.html')
 
     user = request.POST.get('user')
     file_upload = request.FILES.get('customer_excel')  # 获取excel文件对象
@@ -124,6 +124,9 @@ def upload_file(request):  # 上传文件
 
         # 使用bulk_create批量插入
         models.Customer.objects.bulk_create(date_list)
+
+        # 删除上传的excel文件
+        os.remove(file_path)
 
     except Exception as e:
         return HttpResponse('批量添加失败{}'.format(e))
