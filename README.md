@@ -1,6 +1,6 @@
 本程序运行环境：python3.5.4,django 2.0,7
 说明：
-客户关系管理系统
+excel文件上传
 数据库使用的是sqlite
 
 首页路径为/index/
